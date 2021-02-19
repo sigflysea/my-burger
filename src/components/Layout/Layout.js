@@ -1,7 +1,7 @@
 import React from 'react';
 import Auxi from '../../hoc/Auxi';
 
-import classes from './Layout.css';
+import classes from './Layout.module.css';
 const layout = (props) => {
     return (
         <Auxi>
