@@ -69,6 +69,12 @@ class BurgerBuilder extends Component {
     placeOrder = () => {
         this.setState({ purchasing: true });
     };
+    cancelOrder = () => {
+        this.setState({ purchasing: false });
+    };
+    proceedOrder = () => {
+        alert('Hey You');
+    };
     render() {
         const disableIng = { ...this.state.ingredients };
         for (let key in disableIng) {
@@ -76,9 +82,14 @@ class BurgerBuilder extends Component {
         }
         return (
             <Auxi>
-                <Modal show={this.state.purchasing}>
+                <Modal
+                    show={this.state.purchasing}
+                    cancelOrder={this.cancelOrder}
+                >
                     <OrderSummary
                         ingredients={this.state.ingredients}
+                        cancelOrder={this.cancelOrder}
+                        proceedOrder={this.proceedOrder}
                     />
                 </Modal>
 

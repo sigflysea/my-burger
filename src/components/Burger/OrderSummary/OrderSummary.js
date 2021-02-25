@@ -1,5 +1,6 @@
 import React from 'react';
 import Auxi from '../../../hoc/Auxi';
+import Button from '../../UI/Button/Button';
 const orderSummary = (props) => {
     const ingredientSum = Object.keys(
         props.ingredients
@@ -19,6 +20,18 @@ const orderSummary = (props) => {
         <Auxi>
             <p>Your order: </p>
             <ul>{ingredientSum}</ul>
+            <Button
+                btnType='Danger'
+                clicked={props.cancelOrder}
+            >
+                Cancel
+            </Button>
+            <Button
+                btnType='Success'
+                clicked={props.proceedOrder}
+            >
+                Place Order
+            </Button>
         </Auxi>
     );
 };
