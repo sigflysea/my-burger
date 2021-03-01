@@ -20,6 +20,11 @@ const orderSummary = (props) => {
         <Auxi>
             <p>Your order: </p>
             <ul>{ingredientSum}</ul>
+            <p>
+                <strong>
+                    Your total is: ${props.price}
+                </strong>
+            </p>
             <Button
                 btnType='Danger'
                 clicked={props.cancelOrder}
