@@ -4,6 +4,8 @@ import Burger from '../../components/Burger/Burger';
 import BuildControls from '../../components/Burger/BuildControls/BuildControls';
 import Modal from '../../components/UI/Modal/Modal';
 import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
+import axios from '../../axios-orders';
+import Spinner from '../../components/UI/Spinner/Spinner';
 const ITEMPRICE = {
     salad: 0.5,
     bacon: 0.75,
@@ -21,6 +23,7 @@ class BurgerBuilder extends Component {
         totalPrice: 4,
         purchasable: false,
         purchasing: false,
+        loading: false,
     };
     updatePurchasable(updatedIngre) {
         const purchase = { ...updatedIngre };
@@ -73,12 +76,48 @@ class BurgerBuilder extends Component {
         this.setState({ purchasing: false });
     };
     proceedOrder = () => {
-        alert('Hey You');
+        this.setState({ loading: true });
+        const order = {
+            ingredients: this.state.ingredients,
+            price: this.state.totalPrice,
+            customer: {
+                name: 'Long',
+                address: 'long island',
+            },
+        };
+        console.log('how many' + this.state.loading);
+        //  why this show false? shouldn't it show value from line 79??
+        axios
+            .post('/order.json', order)
+            .then((response) => {
+                this.setState({
+                    loading: false,
+                    purchasing: false,
+                });
+            })
+            .catch((error) => {
+                this.setState({
+                    loading: false,
+                    purchasing: false,
+                });
+            });
     };
     render() {
         const disableIng = { ...this.state.ingredients };
         for (let key in disableIng) {
             disableIng[key] = disableIng[key] <= 0;
+        }
+        let submitOrder = (
+            <OrderSummary
+                ingredients={this.state.ingredients}
+                cancelOrder={this.cancelOrder}
+                proceedOrder={this.proceedOrder}
+                price={this.state.totalPrice}
+            />
+        );
+        if (this.state.loading) {
+            console.log('now' + this.state.loading);
+            submitOrder = <Spinner></Spinner>;
         }
         return (
             <Auxi>
@@ -86,12 +125,7 @@ class BurgerBuilder extends Component {
                     show={this.state.purchasing}
                     cancelOrder={this.cancelOrder}
                 >
-                    <OrderSummary
-                        ingredients={this.state.ingredients}
-                        cancelOrder={this.cancelOrder}
-                        proceedOrder={this.proceedOrder}
-                        price={this.state.totalPrice}
-                    />
+                    {submitOrder}
                 </Modal>
 
                 <Burger
