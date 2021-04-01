@@ -85,33 +85,49 @@ class BurgerBuilder extends Component {
         this.setState({ purchasing: false });
     };
     proceedOrder = () => {
-        this.setState({ loading: true });
-        const order = {
-            ingredients: this.state.ingredients,
-            price: this.state.totalPrice,
-            customer: {
-                name: 'Long',
-                address: 'long island',
-            },
-        };
-        console.log('how many' + this.state.loading);
-        //  why this show false? shouldn't it show value from line 79??
-        axios
-            .post('/order.json', order)
-            .then((response) => {
-                this.setState({
-                    loading: false,
-                    purchasing: false,
-                });
-            })
-            .catch((error) => {
-                this.setState({
-                    loading: false,
-                    purchasing: false,
-                });
-            });
+        // this.setState({ loading: true });
+        // const order = {
+        //     ingredients: this.state.ingredients,
+        //     price: this.state.totalPrice,
+        //     customer: {
+        //         name: 'Long',
+        //         address: 'long island',
+        //     },
+        // };
+        // console.log('how many' + this.state.loading);
+        // //  why this show false? shouldn't it show value from line 89??
+        // axios
+        //     .post('/order.json', order)
+        //     .then((response) => {
+        //         this.setState({
+        //             loading: false,
+        //             purchasing: false,
+        //         });
+        //     })
+        //     .catch((error) => {
+        //         this.setState({
+        //             loading: false,
+        //             purchasing: false,
+        //         });
+        //     });
+        const queryParam = [];
+        for (let i in this.state.ingredients) {
+            queryParam.push(
+                encodeURIComponent(i) +
+                    '=' +
+                    encodeURIComponent(
+                        this.state.ingredients[i]
+                    )
+            );
+        }
+        let queryString = queryParam.join('&');
+        this.props.history.push({
+            pathname: '/checkout',
+            search: '?' + queryString,
+        });
     };
     render() {
+        console.log(this.props);
         const disableIng = { ...this.state.ingredients };
         for (let key in disableIng) {
             disableIng[key] = disableIng[key] <= 0;
@@ -153,13 +169,13 @@ class BurgerBuilder extends Component {
         }
         return (
             <Auxi>
+                {burger}
                 <Modal
                     show={this.state.purchasing}
                     cancelOrder={this.cancelOrder}
                 >
                     {orderSummary}
                 </Modal>
-                {burger}
             </Auxi>
         );
     }

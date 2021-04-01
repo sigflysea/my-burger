@@ -5,9 +5,16 @@ import classes from './Burger.module.css';
 const burger = (props) => {
     let tIngredients = Object.keys(props.ingredients)
         .map((igKey) => {
-            return [...Array(props.ingredients[igKey])].map((_, i) => {
-                return <BurgerIngredient key={igKey + i} type={igKey} />;
-            });
+            return [...Array(props.ingredients[igKey])].map(
+                (_, i) => {
+                    return (
+                        <BurgerIngredient
+                            key={igKey + i}
+                            type={igKey}
+                        />
+                    );
+                }
+            );
         })
         .reduce((acul, el) => {
             return acul.concat(el);
